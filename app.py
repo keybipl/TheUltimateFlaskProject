@@ -34,6 +34,7 @@ def theform():
 
 @app.route('/process', methods=['POST'])
 def process():
+
     name = request.form['name']
     location = request.form['location']
 

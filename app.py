@@ -1,4 +1,6 @@
 from flask import Flask, jsonify, request
+import requests
+
 
 app = Flask(__name__)
 
@@ -36,6 +38,17 @@ def process():
     location = request.form['location']
 
     return f'Hello {name}, you are from {location}'
+
+
+@app.route('/processjson', methods=['GET', 'POST'])
+def processjson():
+    response = requests.get("http://api.nbp.pl/api/exchangerates/rates/a/eur/")
+    data = response.json()
+    kurs = data["rates"]
+    lista = kurs[0]
+    eur = lista['mid']
+    kurs = float(eur)
+    return f'Kurs: {kurs}'
 
 
 if __name__ == '__main__':

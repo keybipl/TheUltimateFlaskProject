@@ -23,22 +23,18 @@ def query():
     return f'<h1>Hi {name}, you are from {location}. You are on the query page</h1>'
 
 
-@app.route('/theform')
+@app.route('/theform', methods=['GET', 'POST'])
 def theform():
-    return '''<form method="POST" action="/process">
-                <input type="text" name="name">
-                <input type="text" name="location">
-                <input type="submit" value="Wyślij">
-              </form>'''
-
-
-@app.route('/process', methods=['POST'])
-def process():
-
-    name = request.form['name']
-    location = request.form['location']
-
-    return f'Hello {name}, you are from {location}'
+    if request.method == 'GET':
+        return '''<form method="POST" action="/theform">
+                    <input type="text" name="name">
+                    <input type="text" name="location">
+                    <input type="submit" value="Wyślij">
+                  </form>'''
+    else:
+        name = request.form['name']
+        location = request.form['location']
+        return f'Hello {name}, you are from {location}'
 
 
 @app.route('/processjson', methods=['GET', 'POST'])

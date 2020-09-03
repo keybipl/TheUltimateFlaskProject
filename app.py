@@ -15,7 +15,17 @@ def hello_world():
 @app.route('/home', methods=['POST', 'GET'], defaults={'name': 'Przybyszu'})
 @app.route('/home/<string:name>', methods=['POST', 'GET'])
 def home(name):
+    session['name'] = name
     return f'<h1>Hello {name}, you are on the homepage!</h1>'
+
+
+@app.route('/json')
+def json():
+    if 'name' in session:
+        name = session['name']
+    else:
+        name = 'zdupy'
+    return jsonify({'key': 'value', 'listkey': [1,2,3,], 'name': name})
 
 
 @app.route('/query')

@@ -16,7 +16,7 @@ def hello_world():
 @app.route('/home/<string:name>', methods=['POST', 'GET'])
 def home(name):
     session['name'] = name
-    return render_template('home.html', name=name)
+    return render_template('home.html', name=name, display=True)
 
 
 @app.route('/json')

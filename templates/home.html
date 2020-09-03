@@ -8,5 +8,10 @@
 
 <h1>Hello <b>{{ name }}</b>, you are on the homepage!</h1>
 
+{% if display %}
+    <h1><b>DISPLAY</b></h1>
+    {% else %}
+    <h1><b>NOT DISPLAY</b></h1>
+{% endif %}
 </body>
 </html>

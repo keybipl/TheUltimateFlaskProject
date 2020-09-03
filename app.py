@@ -16,7 +16,8 @@ def hello_world():
 @app.route('/home/<string:name>', methods=['POST', 'GET'])
 def home(name):
     session['name'] = name
-    return render_template('home.html', name=name, display=True)
+    return render_template('home.html', name=name, display=True, mylist = [1,2,3,4,5], listdict = [{'name': 'Kuba'}, {'name': 'Mati'}])
+
 
 
 @app.route('/json')

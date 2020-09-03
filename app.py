@@ -1,8 +1,10 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, url_for, redirect, session
 import requests
 
 
 app = Flask(__name__)
+
+app.config['SECRET_KEY'] = '&Oc?P7zBQZ1H}7y{k!a?7oD>q)qHa'
 
 
 @app.route('/')
@@ -10,7 +12,7 @@ def hello_world():
     return '<h1>Hello World!</h1>'
 
 
-@app.route('/home', methods=['POST', 'GET'], defaults={'name': 'Default'})
+@app.route('/home', methods=['POST', 'GET'], defaults={'name': 'Przybyszu'})
 @app.route('/home/<string:name>', methods=['POST', 'GET'])
 def home(name):
     return f'<h1>Hello {name}, you are on the homepage!</h1>'
@@ -34,7 +36,9 @@ def theform():
     else:
         name = request.form['name']
         location = request.form['location']
-        return f'Hello {name}, you are from {location}'
+        # return f'Hello {name}, you are from {location}'
+        return redirect(url_for('home', name=name, location=location))
+
 
 
 @app.route('/processjson', methods=['GET', 'POST'])

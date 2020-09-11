@@ -1,15 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Formularz</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}The form{% endblock %}
+
+
+{% block content %}
+    {{ super() }}
+
 <h1>Proszę wypełnij formularz</h1>
 <form method="POST" action="/theform">
                     <input type="text" name="name">
                     <input type="text" name="location">
                     <input type="submit" value="Wyślij">
 </form>
-</body>
-</html>
+{% endblock %}

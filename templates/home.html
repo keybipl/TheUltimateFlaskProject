@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Home Page</title>
-</head>
-<body>
+{% extends 'base.html' %}
 
+{% block title %}Home Page{% endblock %}
+
+{% block content %}{{ super() }}
 <h1>Hello <b>{{ name }}</b>, you are on the homepage!</h1>
 
 {% if display %}
@@ -22,7 +19,5 @@
     <h4>{{ x.name }}</h4>
 {% endfor %}
 
-
-
-</body>
-</html>
+<img src="{{ url_for('static', filename='mapa.PNG') }}">
+{% endblock %}

@@ -34,7 +34,12 @@ def hello_world():
 @app.route('/home/<string:name>', methods=['POST', 'GET'])
 def home(name):
     session['name'] = name
-    return render_template('home.html', name=name, display=True, mylist = [1,2,3,4,5], listdict = [{'name': 'Kuba'}, {'name': 'Mati'}])
+    db = get_db()
+    cur = db.execute('select id, name, location from users')
+    results = cur.fetchall()
+
+    return render_template('home.html', name=name, display=True, mylist = [1,2,3,4,5], listdict = [{'name': 'Kuba'}, \
+                            {'name': 'Mati'}], results=results)
 
 
 @app.route('/json')
@@ -60,6 +65,11 @@ def theform():
     else:
         name = request.form['name']
         location = request.form['location']
+
+        db = get_db()
+        db.execute('insert into users (name, location) values (?,?)', [name, location])
+        db.commit()
+
         # return f'Hello {name}, you are from {location}'
         return redirect(url_for('home', name=name, location=location))
 
@@ -81,8 +91,8 @@ def viewresults():
     db = get_db()
     cur = db.execute('select id, name, location from users')
     results = cur.fetchall()
-    return '<h1>The ID is {}. The name is {}. The location is {}.'.format(results[0]['id'], results[0]['name'], \
-                                                                          results[0]['location'])
+    return '<h1>The ID is {}. The name is {}. The location is {}.'.format(results[2]['id'], results[2]['name'], \
+                                                                          results[2]['location'])
 
 
 if __name__ == '__main__':

@@ -1,10 +1,28 @@
-from flask import Flask, jsonify, request, url_for, redirect, session, render_template
+from flask import Flask, jsonify, request, url_for, redirect, session, render_template, g
+import sqlite3
 import requests
 
 
 app = Flask(__name__)
-
 app.config['SECRET_KEY'] = '&Oc?P7zBQZ1H}7y{k!a?7oD>q)qHa'
+
+
+def connect_db():
+    sql = sqlite3.connect('data.db')
+    sql.row_factory = sqlite3.Row
+    return sql
+
+
+def get_db():
+    if not hasattr(g, 'sqlite3'):
+        g.sqlite_db = connect_db()
+    return g.sqlite_db
+
+
+@app.teardown_appcontext
+def close_db(error):
+    if hasattr(g, 'sqlite.db'):
+        g.sqlite_db.close()
 
 
 @app.route('/')
@@ -17,7 +35,6 @@ def hello_world():
 def home(name):
     session['name'] = name
     return render_template('home.html', name=name, display=True, mylist = [1,2,3,4,5], listdict = [{'name': 'Kuba'}, {'name': 'Mati'}])
-
 
 
 @app.route('/json')
@@ -57,6 +74,15 @@ def processjson():
     eur = lista['mid']
     kurs = float(eur)
     return f'Kurs: {kurs}'
+
+
+@app.route('/viewresults')
+def viewresults():
+    db = get_db()
+    cur = db.execute('select id, name, location from users')
+    results = cur.fetchall()
+    return '<h1>The ID is {}. The name is {}. The location is {}.'.format(results[0]['id'], results[0]['name'], \
+                                                                          results[0]['location'])
 
 
 if __name__ == '__main__':
